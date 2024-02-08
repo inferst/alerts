@@ -15,7 +15,7 @@ export const connection = (props) => {
       const data = JSON.parse(event.data);
       if (data.event && data.event.source == 'Twitch') {
         if (data.event.type == 'Follow') {
-          props.onFollow(data.user_name);
+          props.onFollow(data.data.user_name);
         }
       }
 
