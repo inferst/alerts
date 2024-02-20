@@ -1,38 +1,31 @@
 import { createMemo, createSignal, onCleanup } from 'solid-js';
 import { Motion } from 'solid-motionone';
 
-const alertSound = new Audio('/follow.mp3');
-alertSound.volume = 0.1;
-
-function FollowAlert(props) {
-  const [followerName, setFollowerName] = createSignal('');
-  const [followText, setFollowText] = createSignal('');
-  const [leftoverFollowerName, setLeftoverFollowerName] = createSignal('');
-  const [leftoverFollowText, setLeftoverFollowText] = createSignal('');
+function DudeAlert(props) {
+  const [name, setName] = createSignal('');
+  const [alertText, setAlertText] = createSignal('');
+  const [leftoverName, setLeftoverName] = createSignal('');
+  const [leftoverAlertText, setLeftoverAlertText] = createSignal('');
 
   const [isPlaying, setIsPlaying] = createSignal(false);
 
-  const followTextTemplate = ', добро пожаловать!';
-
   const timer = setInterval(() => {
     if (props.queue.value().length > 0 && !isPlaying()) {
-      const followerName = props.queue.shift();
-      setLeftoverFollowerName(followerName);
-      setLeftoverFollowText(followTextTemplate);
+      const item = props.queue.shift();
+      setLeftoverName(item.name);
+      setLeftoverAlertText(item.text);
 
       setIsPlaying(true);
 
-      alertSound.pause();
-      alertSound.currentTime = 0;
-      alertSound.play().catch(() => {});
+      item.onStart();
 
       setTimeout(() => {
         writeSymbol();
 
         setTimeout(() => {
           setIsPlaying(false);
-          setFollowerName('');
-          setFollowText('');
+          setName('');
+          setAlertText('');
         }, 5000);
       }, 500);
     }
@@ -41,18 +34,18 @@ function FollowAlert(props) {
   onCleanup(() => clearInterval(timer));
 
   const writeSymbol = () => {
-    if (!leftoverFollowText()) {
+    if (!leftoverAlertText()) {
       return;
     }
 
-    if (leftoverFollowerName()) {
-      const symbol = leftoverFollowerName()[0];
-      setLeftoverFollowerName(leftoverFollowerName().slice(1));
-      setFollowerName(followerName() + symbol);
+    if (leftoverName()) {
+      const symbol = leftoverName()[0];
+      setLeftoverName(leftoverName().slice(1));
+      setName(name() + symbol);
     } else {
-      const symbol = leftoverFollowText()[0];
-      setLeftoverFollowText(leftoverFollowText().slice(1));
-      setFollowText(followText() + symbol);
+      const symbol = leftoverAlertText()[0];
+      setLeftoverAlertText(leftoverAlertText().slice(1));
+      setAlertText(alertText() + symbol);
     }
 
     setTimeout(writeSymbol, 50);
@@ -75,11 +68,11 @@ function FollowAlert(props) {
           <div class="py-6 mx-6 w-[464px] h-[128px] flex items-center justify-center absolute overflow-hidden">
             <p class="text-4xl text-center z-10">
               <span class="text-pink-600 font-semibold">
-                {followerName()}
-                <span class="opacity-0">{leftoverFollowerName()}</span>
+                {name()}
+                <span class="opacity-0">{leftoverName()}</span>
               </span>
-              {followText()}
-              <span class="opacity-0">{leftoverFollowText()}</span>
+              {alertText()}
+              <span class="opacity-0">{leftoverAlertText()}</span>
             </p>
           </div>
           <img
@@ -104,4 +97,4 @@ function FollowAlert(props) {
   );
 }
 
-export default FollowAlert;
+export default DudeAlert;

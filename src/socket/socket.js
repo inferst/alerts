@@ -6,7 +6,7 @@ export const socket = (props) => {
       request: 'Subscribe',
       id: 'alerts',
       events: {
-        Twitch: ['Follow'],
+        Twitch: ['Follow', 'Raid'],
       },
     };
 
@@ -17,6 +17,8 @@ export const socket = (props) => {
         if (data.event && data.event.source == 'Twitch') {
           if (data.event.type == 'Follow') {
             props.onFollow(data.data.user_name);
+          } else if (data.event.type == 'Raid') {
+            props.onRaid(data.data.from_broadcaster_user_name, data.data.viewers);
           }
         }
       };
