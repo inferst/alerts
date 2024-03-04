@@ -26,7 +26,7 @@ function DudeAlert(props) {
           setIsPlaying(false);
           setName('');
           setAlertText('');
-        }, 5000);
+        }, item.duration);
       }, 500);
     }
   }, 100);
@@ -66,8 +66,8 @@ function DudeAlert(props) {
           transition={{ duration: 0.5, easing: 'ease-in-out' }}
         >
           <div class="py-6 mx-6 w-[464px] h-[128px] flex items-center justify-center absolute overflow-hidden">
-            <p class="text-4xl text-center z-10">
-              <span class="text-pink-600 font-semibold">
+            <p class="text-4xl text-center z-10 font-semibold">
+              <span class="text-pink-600">
                 {name()}
                 <span class="opacity-0">{leftoverName()}</span>
               </span>

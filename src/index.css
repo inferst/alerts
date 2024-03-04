@@ -17,6 +17,11 @@
   src: url('/fonts/asphalt-c.ttf');
 }
 
+@font-face {
+  font-family: 'Play';
+  src: url('/fonts/Play-Regular.ttf');
+}
+
 img {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -24,5 +29,5 @@ img {
 }
 
 body {
-  font-family: Asphalt-С;
+  font-family: Play;
 }
